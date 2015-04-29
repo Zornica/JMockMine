@@ -25,11 +25,13 @@ public class SendMessagesTest {
     Person person1 = new Person("sisa");
     final Person person2 = new Person("Ivan");
     final Message message = new Message(person2, "Hello", "Q sega");
-    final MessageSender messageSender = context.mock(MessageSender.class);
-
+    final Validator validator=context.mock(Validator.class);
+    final SMSGateway gateway=context.mock(SMSGateway.class);
+final MessageSender messageSender=new MessageSender(validator,gateway);
     context.checking(new Expectations() {
       {
-        oneOf(messageSender).send(with(any(Message.class)));
+        oneOf(validator).validate(message); will(returnValue(true));
+        oneOf(gateway).send(with(any(Message.class)));
         will(returnValue(true));
       }
     });
@@ -38,22 +40,7 @@ public class SendMessagesTest {
   }
 
 
-  @Test
-  public void sendMessageWasFailed() {
-    Person person1 = new Person("sisa");
-    final Person person2 = new Person("Ivan");
-    final Message message = new Message(person2, "Hello", "Q sega");
-    final MessageSender messageSender = context.mock(MessageSender.class);
 
-    context.checking(new Expectations() {
-      {
-        oneOf(messageSender).send(with(any(Message.class)));
-        will(returnValue(false));
-      }
-    });
-
-    assertThat(person1.sendMessage(message, messageSender), is(false));
-  }
 
 //  @Factory
 //  public static org.hamcrest.Matcher<Message> validateMessage(Message message){
