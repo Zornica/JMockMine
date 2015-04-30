@@ -3,7 +3,7 @@ package demotask;
 /**
 * Created by Silvia Petrova(silviqpetrova1992@gmail.com)on 4/29/15.
 */
-class Dispatcher {
+public class Dispatcher {
   private final SmsGateway gateway;
   private final MessageValidator validator;
 
